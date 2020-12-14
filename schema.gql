@@ -1,0 +1,7 @@
+type Todo {
+  task: String!
+  completed: Boolean!
+}
+type Query {
+  allTodos: [Todo!]
+}
