@@ -8,7 +8,7 @@ import { graphQLClient } from "../utils/graphql-client";
 
 interface EditFormProps {
   defaultValues: any,
-  id: string
+  id: string | undefined | string[]
 }
 
 const EditForm: React.FC<EditFormProps> = ({ defaultValues, id }) => {
