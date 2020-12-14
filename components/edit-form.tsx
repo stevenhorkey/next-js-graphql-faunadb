@@ -5,14 +5,21 @@ import { gql } from "graphql-request";
 import { useForm } from "react-hook-form";
 import utilStyles from "../styles/utils.module.scss";
 import { graphQLClient } from "../utils/graphql-client";
-const EditForm = ({ defaultValues, id }) => {
+
+interface EditFormProps {
+  defaultValues: any,
+  id: string
+}
+
+const EditForm: React.FC<EditFormProps> = ({ defaultValues, id }) => {
+  console.log(typeof defaultValues);
   const [errorMessage, setErrorMessage] = useState("");
   const { handleSubmit, register, reset, errors } = useForm({
     defaultValues: {
       ...defaultValues,
     },
   });
-  const onSubmit = handleSubmit(async ({ task, completed }) => {
+  const onSubmit = handleSubmit(async ({ task: string, completed: Boolean }) => {
     if (errorMessage) setErrorMessage("");
     const query = gql`
       mutation UpdateATodo($id: ID!, $task: String!, $completed: Boolean!) {
@@ -24,8 +31,8 @@ const EditForm = ({ defaultValues, id }) => {
     `;
     const variables = {
       id,
-      task,
-      completed,
+      task: string,
+      completed: Boolean,
     };
     try {
       await graphQLClient.request(query, variables);

@@ -5,10 +5,15 @@ import { gql } from 'graphql-request';
 import Layout from '../../components/layout';
 import EditForm from '../../components/edit-form';
 import { graphQLClient } from '../../utils/graphql-client';
-const Todo = () => {
+
+interface TodoProps {
+
+}
+
+const Todo: React.FC<TodoProps> = () => {
   const router = useRouter();
   const { id } = router.query;
-  const fetcher = async (query) => await graphQLClient.request(query, { id });
+  const fetcher = async (query: string) => await graphQLClient.request(query, { id });
   const query = gql`
     query FindATodoByID($id: ID!) {
       findTodoByID(id: $id) {
@@ -25,8 +30,8 @@ const Todo = () => {
       {data ? (
         <EditForm defaultValues={data.findTodoByID} id={id} />
       ) : (
-        <div>loading...</div>
-      )}
+          <div>loading...</div>
+        )}
     </Layout>
   );
 };

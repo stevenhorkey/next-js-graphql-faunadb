@@ -6,7 +6,12 @@ import { useForm } from "react-hook-form";
 import Layout from "../components/layout";
 import utilStyles from "../styles/utils.module.scss";
 import { graphQLClient } from "../utils/graphql-client";
-const New = () => {
+
+interface NewProps {
+
+}
+
+const New: React.FC<NewProps> = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const { handleSubmit, register, errors } = useForm();
   const onSubmit = handleSubmit(async ({ task }) => {

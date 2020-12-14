@@ -1,7 +1,12 @@
 // components/layout.js
 import Head from "next/head";
 import styles from "./layout.module.scss";
-const Layout = ({ children }) => (
+
+interface LayoutProps {
+
+}
+
+const Layout: React.FC<LayoutProps> = ({ children }) => (
   <>
     <Head>
       <title>Next Fauna GraphQL CRUD</title>

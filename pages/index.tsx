@@ -6,9 +6,19 @@ import styles from "../styles/Home.module.scss";
 import { graphQLClient } from "../utils/graphql-client";
 import Link from "next/link";
 
-const fetcher = async (query) => await graphQLClient.request(query);
+interface HomeProps {
 
-const Home = () => {
+}
+
+interface Todo {
+  task: string
+  _id: number
+  completed: boolean
+}
+
+const fetcher = async (query: string) => await graphQLClient.request(query);
+
+const Home: React.FC<HomeProps> = () => {
   const { data, error, mutate } = useSWR(
     gql`
       {
@@ -23,7 +33,7 @@ const Home = () => {
     `,
     fetcher
   );
-  const deleteATodo = async (id) => {
+  const deleteATodo = async (id: number) => {
     const query = gql`
       mutation DeleteATodo($id: ID!) {
         deleteTodo(id: $id) {
@@ -38,7 +48,7 @@ const Home = () => {
       console.error(error);
     }
   };
-  const toggleTodo = async (id, completed) => {
+  const toggleTodo = async (id?: number, completed?: boolean) => {
     const query = gql`
       mutation PartialUpdateTodo($id: ID!, $completed: Boolean!) {
         partialUpdateTodo(id: $id, data: { completed: $completed }) {
@@ -59,7 +69,6 @@ const Home = () => {
     }
   };
   if (error) {
-    console.log(error);
     return <div>failed to load</div>;
   }
   return (
@@ -68,7 +77,7 @@ const Home = () => {
       {data ? (
         <>
           <ul>
-            {data.allTodos.data.map((todo) => (
+            {data.allTodos.data.map((todo: Todo) => (
               <li key={todo._id} className={styles.todo}>
                 <span
                   onClick={() => toggleTodo(todo._id, todo.completed)}
@@ -99,8 +108,8 @@ const Home = () => {
           </Link>
         </>
       ) : (
-        <div>loading...</div>
-      )}
+          <div>loading...</div>
+        )}
     </Layout>
   );
 };
