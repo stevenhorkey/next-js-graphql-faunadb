@@ -1,7 +1,50 @@
+directive @embedded on OBJECT
+directive @collection(name: String!) on OBJECT
+directive @index(name: String!) on FIELD_DEFINITION
+directive @resolver(
+  name: String
+  paginated: Boolean! = false
+) on FIELD_DEFINITION
+directive @relation(name: String) on FIELD_DEFINITION
+directive @unique(index: String) on FIELD_DEFINITION
+scalar Date
+
+scalar Long
+
+type Mutation {
+  createTodo(data: TodoInput!): Todo!
+  updateTodo(
+    id: ID!
+    data: TodoInput!
+  ): Todo
+  deleteTodo(id: ID!): Todo
+}
+
+type Query {
+  findTodoByID(id: ID!): Todo
+  allTodos(
+    _size: Int
+    _cursor: String
+  ): TodoPage!
+}
+
+scalar Time
+
 type Todo {
+  _id: ID!
+  _ts: Long!
   task: String!
   completed: Boolean!
 }
-type Query {
-  allTodos: [Todo!]
+
+input TodoInput {
+  task: String!
+  completed: Boolean!
 }
+
+type TodoPage {
+  data: [Todo]!
+  after: String
+  before: String
+}
+
